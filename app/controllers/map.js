@@ -1,18 +1,5 @@
 var pg = require('pg');
 
-// List of data points we want. cp_types that are null are actual roadways.
-var cp_types = [
-  "'Bike Lanes'",
-  "'Contra-Flow Bike Lanes'",
-  "'Sharrows'",
-  "'Suggested On-Street Connections'",
-  "'Suggested On-Street Routes'",
-  "'Park Roads'",
-  "'Major Multi-use Pathway'",
-  "'Minor Multi-use Pathway'",
-  "'Signed Routes'"
-].join(',');
-
 var Map = function () {
   this.respondsWith = ['json'];
   this.fetch = function(req, resp, params) {
@@ -31,21 +18,16 @@ var Map = function () {
         }
       };
 
-      // Bounding box for a polygon
-      var polygon = [
-        bounds.southWest.lng + " " + bounds.southWest.lat,
-        bounds.northEast.lng + " " + bounds.southWest.lat,
-        bounds.northEast.lng + " " + bounds.northEast.lat,
-        bounds.southWest.lng + " " + bounds.northEast.lat,
-        bounds.southWest.lng + " " + bounds.southWest.lat
+      var bounding_box = [
+        bounds.southWest.lng, bounds.southWest.lat,
+        bounds.northEast.lng, bounds.northEast.lat
       ].join(",");
 
       var sql = [
         "SELECT ST_AsGeoJSON(the_geom) as shape, cp_type",
         "FROM public.centreline_od_bikeways_dec2011_wgs84",
-        "WHERE cp_type IN(" + cp_types + ")",
-        "AND the_geom && ST_GeogFromText('SRID=4326;POLYGON((" + polygon + "))')",
-        "AND ST_Intersects(the_geom, ST_GeogFromText('SRID=4326;POLYGON((" + polygon + "))'));"
+        "WHERE cp_type != 'null'",
+        "AND ST_Intersects(the_geom, ST_MakeEnvelope(" + bounding_box + ", -1))"
       ].join(' ');
       geddy.log.debug(sql);
 
