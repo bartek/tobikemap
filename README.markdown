@@ -9,3 +9,5 @@ Built as part of a weekend project to learn how to map data onto a map. Tools us
 
 Comments, and definitely suggestions/critique are welcome. Hope to add more to this
 (e.g. reference points like subway stations, bixi stations, etc.) as I have more time :)
+
+An article of what I learned while making it can be found [on my blog](http://bartek.im/blog/2012/03/30/torontos-bike-lanes-friendly-map.html)
