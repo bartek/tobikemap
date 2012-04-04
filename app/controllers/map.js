@@ -6,6 +6,10 @@ var Map = function () {
     var self = this;
 
     pg.connect(geddy.config.database.connection, function(err, client) {
+      if (!params.bounds) {
+        this.respond({});
+      }
+
       var bounds = params.bounds.split(",");
       var bounds = {
         southWest: {
