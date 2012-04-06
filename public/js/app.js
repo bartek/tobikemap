@@ -64,4 +64,13 @@ $(function() {
     requestMap(e.target.getBounds());
   });
   map.setView(center, 13, true);
+
+  if (navigator.geolocation) {
+    var success = function(position) {
+      var geoloc = new L.LatLng(position.coords.latitude, position.coords.longitude)
+      map.panTo(geoloc);
+    };
+    var error = function(err) { console.error(err); return; }
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
 });
