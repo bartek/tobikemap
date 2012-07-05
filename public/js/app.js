@@ -1,10 +1,16 @@
 $(function() {
   var lanesLayer;
   var center = new L.LatLng(43.6481, -79.4042);
+
+  // Pale Dawn Tileset.
+  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/56864ad5a09d4398a7b5a6c79c3d64aa/998/256/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    maxZoom: 18
+});
   var map = new L.Map('map', {
     center: center,
     zoom: 13,
-    layers: [new L.StamenTileLayer("terrain")]
+    layers: [cloudmade]
   });
 
   var typesMapping = {
@@ -19,11 +25,10 @@ $(function() {
     'Suggested On-Street Routes': {color: '#FEE168', weight: 6}
   };
 
-  // Plot these in the html. Nasty!
+  // Plot the types in the html. Nasty!
   _.each(typesMapping, function(el, key, obj) {
     $("#legend").append("<li><span class='legend-circle' style='color:" 
-      + el.color 
-      + "'></span>" + key + "</li>");
+        + el.color + "'></span>" + key + "</li>");
   });
 
   var fillMap = function(result) {

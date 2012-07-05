@@ -28,10 +28,10 @@ var Map = function () {
       ].join(",");
 
       var sql = [
-        "SELECT ST_AsGeoJSON(the_geom) as shape, cp_type",
-        "FROM public.centreline_od_bikeways_dec2011_wgs84",
+        "SELECT ST_AsGeoJSON(geom) as shape, cp_type",
+        "FROM v_centreline_od_bikeways_wgs84",
         "WHERE cp_type != 'null'",
-        "AND ST_Intersects(the_geom, ST_MakeEnvelope(" + bounding_box + ", -1))"
+        "AND ST_Intersects(geom, ST_MakeEnvelope(" + bounding_box + ", -1))"
       ].join(' ');
       geddy.log.debug(sql);
 
