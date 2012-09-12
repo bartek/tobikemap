@@ -42,8 +42,14 @@ var Map = function () {
 
         var featureCollection = new FeatureCollection();
         for (i = 0; i < result.rows.length; i++) {
-          featureCollection.features[i] = JSON.parse(result.rows[i].shape);
-          featureCollection.cp_type[i] = result.rows[i].cp_type;
+          var obj = {
+              type: "Feature",
+              properties: {
+                  cp_type: result.rows[i].cp_type
+              },
+              geometry: JSON.parse(result.rows[i].shape)
+          };
+          featureCollection.features.push(obj);
         }
         self.respond(featureCollection);
       });
@@ -53,7 +59,6 @@ var Map = function () {
   function FeatureCollection() {
     this.type = 'FeatureCollection';
     this.features = new Array();
-    this.cp_type = new Array();
   };
 };
 

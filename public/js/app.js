@@ -31,22 +31,18 @@ $(function() {
         + el.color + "'></span>" + key + "</li>");
   });
 
-  var fillMap = function(result) {
-    var resultCounter = 0;
+  var fillMap = function(featureCollection) {
     if (lanesLayer != undefined) {
       map.removeLayer(lanesLayer);
     }
 
-    lanesLayer = new L.geoJson().addTo(map);
-    // Map the types of lanes to different colours
-    lanesLayer.on('featureparse', function(e) {
-      var _type = result.cp_type[resultCounter];
-      var _style = (typesMapping[_type] != undefined ?  typesMapping[_type] 
-                      : typesMapping['Bike Lanes']); 
-      e.layer.setStyle(_style);
-      resultCounter ++;
-    });
-    lanesLayer.addData(result);
+    lanesLayer = new L.geoJson(featureCollection, {
+        style: function(feature) {
+            return typesMapping[feature.properties.cp_type] != undefined ? 
+                        typesMapping[feature.properties.cp_type] :
+                        typesMapping['Bike Lanes'];
+        }
+    }).addTo(map);
   };
 
   var requestMap = function(bounds) {
