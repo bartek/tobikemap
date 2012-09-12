@@ -37,7 +37,7 @@ $(function() {
       map.removeLayer(lanesLayer);
     }
 
-    lanesLayer = new L.GeoJSON();
+    lanesLayer = new L.geoJson().addTo(map);
     // Map the types of lanes to different colours
     lanesLayer.on('featureparse', function(e) {
       var _type = result.cp_type[resultCounter];
@@ -46,8 +46,7 @@ $(function() {
       e.layer.setStyle(_style);
       resultCounter ++;
     });
-    lanesLayer.addGeoJSON(result);
-    map.addLayer(lanesLayer);
+    lanesLayer.addData(result);
   };
 
   var requestMap = function(bounds) {
